@@ -65,8 +65,42 @@ class MinStack:
         return self.min
 
 
+class Func1MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack = []
+        self.minv = float('inf')
+
+
+    def push(self, x: int) -> None:
+        if not self.stack:
+            self.stack.append(0)
+            self.minv = x
+        else:
+            self.stack.append(x-self.minv)
+            self.minv = min(self.minv,x)
+
+
+    def pop(self) -> None:
+        pop = self.stack.pop()
+        if pop < 0:self.minv = self.minv - pop
+
+
+    def top(self) -> int:
+        top = self.stack[-1]
+        return self.minv + top if top >= 0 else self.minv
+
+
+    def getMin(self) -> int:
+        return self.minv
+
+
+
 if __name__ == '__main__':
-    minStack = MinStack()
+    minStack = Func1MinStack()
     minStack.push(-2)
     minStack.push(2)
     minStack.push(-3)
