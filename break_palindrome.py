@@ -29,9 +29,20 @@ palindrome 只包含小写英文字母
 """
 
 class Solution:
-    def breakPalindrome(self, palindrome: str) -> str:
-        pass
+        
+        def breakPalindrome(self, palindrome: str) -> str:
+            n = len(palindrome)
+            if n == 1:
+                return ""
+            data = list(palindrome)
+            for i in range(n // 2):
+                if data[i] != 'a':
+                    data[i] = 'a'
+                    return "".join(data)
+            data[-1] = 'b'
+            return "".join(data)
 
 
 if __name__ == '__main__':
-    pass
+    palindrome = "abccba"
+    print(Solution().breakPalindrome(palindrome))
