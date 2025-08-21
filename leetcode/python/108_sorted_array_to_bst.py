@@ -26,19 +26,19 @@ class TreeNode:
 
 class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
-        return self.dfs(nums, 0, len(nums))
+        return self.dfs(nums, 0, len(nums)-1)
 
     def dfs(self, nums, start, end):
-        if start == end:
+        if start > end:
             return
         mid = (start + end) // 2
-        return TreeNode(nums[mid], self.dfs(nums, start, mid), self.dfs(nums, mid+1, end))
+        return TreeNode(nums[mid], self.dfs(nums, start, mid-1), self.dfs(nums, mid+1, end))
 
 def befsort(node):
     if node is None:
         return
-    print(node.val)
     befsort(node.left)
+    print(node.val)
     befsort(node.right)
 
 
