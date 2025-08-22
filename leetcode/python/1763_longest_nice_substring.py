@@ -66,18 +66,20 @@ class Solution:
             for i in range(start, end + 1):
                 if s[i].islower():
                     lower|= 1 << (ord(s[i]) - ord('a'))
-                    print('lower: ', bin(lower)[2:].zfill(32))
+                    print('lower: ', bin(lower)[2:].zfill(26))
                 else:
                     upper|= 1 << (ord(s[i]) - ord('A'))
-                    print('upper: ', bin(upper)[2:].zfill(32))
+                    print('upper: ', bin(upper)[2:].zfill(26))
             if lower == upper:
                 if end - start + 1 > maxLen:
                     maxPos, maxLen = start, end - start + 1
                 return
             pos, valid = start, lower & upper
+            print('valid: ', bin(valid)[2:].zfill(26))
             while pos <= end:
                 start = pos
                 while pos <= end and valid & (1 << (ord(s[pos].lower()) - ord('a'))):
+                    print('tmp:   ', bin(1 << (ord(s[pos].lower()) - ord('a')))[2:].zfill(26))
                     pos += 1
                 dfs(start, pos - 1)
                 pos += 1
