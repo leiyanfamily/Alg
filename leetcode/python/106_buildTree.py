@@ -42,29 +42,52 @@ class TreeNode:
 
 
 class Solution:
-    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
-        return self.my_build_tree(inorder, postorder)
 
-    def my_build_tree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+    inorder_index_dict = {}
+
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        self.inorder_index_dict = {item: index for index, item in enumerate(inorder)}
+        return self.my_build_tree(inorder, 0, len(inorder) - 1, postorder, 0, len(postorder) - 1)
+    
+    def my_build_tree(self, inorder: List[int], in_start: int, in_end: int, postorder: List[int], post_start: int, post_end: int) -> Optional[TreeNode]:
         """
+        不拷贝数组
         in:   [[左子树], root, [右子树]]
         post: [[左子树], [右子树], root]
         """
-        if not inorder:
+        if in_start > in_end:
             return
-        if len(inorder) == 1:
-            return TreeNode(inorder[0])
-        
-        root = postorder[-1]
-        in_root_index = inorder.index(root)
-        post_root_index = postorder.index(root)
+        root = postorder[post_end]
+        in_root_index = self.inorder_index_dict.get(root)
+        left_size = in_root_index - in_start
 
         root_node = TreeNode(root)
-        left_node = self.my_build_tree(inorder[:in_root_index], postorder[:in_root_index])
-        right_node = self.my_build_tree(inorder[in_root_index+1:], postorder[in_root_index:post_root_index])
+        left_node = self.my_build_tree(inorder, in_start, in_root_index - 1, postorder, post_start, post_start + left_size - 1)
+        right_node = self.my_build_tree(inorder, in_root_index + 1, in_end, postorder, post_start + left_size, post_end - 1)
         root_node.left = left_node
         root_node.right = right_node
         return root_node
+
+    # def my_build_tree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+    #     """
+    #     in:   [[左子树], root, [右子树]]
+    #     post: [[左子树], [右子树], root]
+    #     """
+    #     if not inorder:
+    #         return
+    #     if len(inorder) == 1:
+    #         return TreeNode(inorder[0])
+        
+    #     root = postorder[-1]
+    #     in_root_index = inorder.index(root)
+    #     post_root_index = postorder.index(root)
+
+    #     root_node = TreeNode(root)
+    #     left_node = self.my_build_tree(inorder[:in_root_index], postorder[:in_root_index])
+    #     right_node = self.my_build_tree(inorder[in_root_index+1:], postorder[in_root_index:post_root_index])
+    #     root_node.left = left_node
+    #     root_node.right = right_node
+    #     return root_node
 
 
 
